@@ -1,5 +1,7 @@
 ceph介绍：
+ceph统一的、分布式的存储系统，可以提供对象存储、块存储和文件系统存储三种功能。
 ceph Filesystem clients需要ceph Metadata Server，ceph Block Devices和Ceph Object Storage不用MDS。
+
 
 根据Ceph官方文档推荐，一个ceph storage cluster需要至少一个ceph monitor和至少两个ceph OSD Daemons来获得avtive-clean的状态.
 step1: 利用docker在集群中布置一个ceph monitor和多个ceph OSD Daemons
