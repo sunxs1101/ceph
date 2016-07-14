@@ -16,7 +16,7 @@ docker exec dockerID ceph -s
 ls /etc/ceph/
 ls /var/lib/ceph/
 ls /var/lib/ceph/mon/ceph-zodiac-02
-
+![](http://docs.ceph.com/docs/master/_images/ditaa-cffd08dd3e192a5f1d724ad7930cb04200b9b425.png)
 step2：ceph.conf和Ceph keyring都在step1中启动监测模块时生成，部署多节点，需要把config和keys分发到其他节点。
 为了方便，在docker中部署，用etcd存储ceph.conf和ceph keyring等配置文件。
 
