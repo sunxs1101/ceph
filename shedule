@@ -1,3 +1,4 @@
+ceph介绍：
 ceph Filesystem clients需要ceph Metadata Server，ceph Block Devices和Ceph Object Storage不用MDS。
 
 根据Ceph官方文档推荐，一个ceph storage cluster需要至少一个ceph monitor和至少两个ceph OSD Daemons来获得avtive-clean的状态.
