@@ -15,11 +15,12 @@ ls /etc/ceph/
 ls /var/lib/ceph/
 ls /var/lib/ceph/mon/ceph-zodiac-02
 
+step2：ceph.conf和Ceph keyring都在step1中启动监测模块时生成，部署多节点，需要把config和keys分发到其他节点。
+为了方便，在docker中部署，用etcd存储ceph.conf和ceph keyring等配置文件。
 
-step2：在docker中部署，etcd存储ceph.conf和ceph keyring等配置文件。
 
 
-视频中的步骤
+youtube视频中的步骤
 getenforce
 ./1-selinux
 ./2-mon
