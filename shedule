@@ -1,0 +1,45 @@
+ceph Filesystem clients需要ceph Metadata Server，ceph Block Devices和Ceph Object Storage不用MDS。
+
+根据Ceph官方文档推荐，一个ceph storage cluster需要至少一个ceph monitor和至少两个ceph OSD Daemons来获得avtive-clean的状态.
+step1: 利用docker在集群中布置一个ceph monitor和多个ceph OSD Daemons
+参考：Running Ceph inside Docker
+在docker hub里有很多的镜像，我们使用Ceph的命名空间，镜像前缀都是ceph/<daemon>
+docker run -d --net=host -v /etc/ceph:/etc/ceph -v /var/lib/ceph/:/var/lib/ceph -e MON_IP=10.10.10.203 -e CEPH_PUBLIC_NETWORK=10.10.10.203/24 ceph/daemon mon
+docker run -d --net=host --privileged=true -v /etc/ceph:/etc/ceph -v /var/lib/ceph/:/var/lib/ceph -v /dev/:/dev/ -e OSD_DEVICE=/dev/vdd ceph-daemon osd_ceph_disk
+然后查看状态
+docker ps
+docker exec dockerID ceph -s
+查看生成的ceph.conf和ceph keyring文件
+ls /etc/ceph/
+ls /var/lib/ceph/
+ls /var/lib/ceph/mon/ceph-zodiac-02
+
+
+step2：在docker中部署，etcd存储ceph.conf和ceph keyring等配置文件。
+
+
+视频中的步骤
+getenforce
+./1-selinux
+./2-mon
+执行玩这两步后就相当与执行了docker run，
+#now i need to distribute those config and keys to the 2 other nod
+./3-copy
+#now I'm going to move the 2 others and apply the config
+./3-restore#切换到3上
+ls /etc/ceph
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
