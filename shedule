@@ -48,6 +48,15 @@ step2：ceph.conf和Ceph keyring都在step1中启动监测模块时生成，部�
 3. http服务：接受其他的文件，也提供下载。
 为了方便，在docker中部署，用etcd存储ceph.conf和ceph keyring等配置文件。
 ceph：配置文件base64，通常比较，zip，base64—1MB，写到etcd后。
+指定mon IP，mon.sh，zip打包，base64 => 每个service中wget脚本，然后在cloud-config中配置。
+
+ceph.sh
+sudo zip -r conf.zip /etc/ceph
+
+wget 
+unzip conf.zip
+echo "$PWD"
+
 
 首先在单机中测试ceph模块service
 https://github.com/ceph/ceph-docker/tree/master/examples/coreos/units-etcd
