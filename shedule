@@ -82,7 +82,7 @@ getenforce
 ./3-restore#切换到3上
 ls /etc/ceph
 
-
+s
 
 
 
