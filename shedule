@@ -50,6 +50,9 @@ step2：ceph.conf和Ceph keyring都在step1中启动监测模块时生成，部�
 ceph：配置文件base64，通常比较，zip，base64—1MB，写到etcd后。
 指定mon IP，mon.sh，zip打包，base64 => 每个service中wget脚本，然后在cloud-config中配置。
 
+
+192中的上传目录：/usr/share/nginx/coreos-mirror
+
 ceph.sh
 sudo zip -r conf.zip /etc/ceph
 
