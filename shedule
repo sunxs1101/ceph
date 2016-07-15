@@ -10,6 +10,7 @@ step1: 利用docker在集群中布置一个ceph monitor和多个ceph OSD Daemons
 202作monitor，203作OSD，
 参考：Running Ceph inside Docker
 在docker hub里有很多的镜像，我们使用Ceph的命名空间，镜像前缀都是ceph/<daemon>
+1.1 启动MON
 docker run -d --net=host -v /etc/ceph:/etc/ceph -v /var/lib/ceph/:/var/lib/ceph -e MON_IP=10.10.10.202 -e CEPH_PUBLIC_NETWORK=10.10.10.202/24 ceph/daemon mon
 然后查看状态
 docker ps
@@ -19,9 +20,9 @@ ls /etc/ceph/
 ls /var/lib/ceph/
 ls /var/lib/ceph/mon/ceph-zodiac-02
 ![](http://docs.ceph.com/docs/master/_images/ditaa-cffd08dd3e192a5f1d724ad7930cb04200b9b425.png)
-deploy OSD：
+1.2 启动OSD：
 docker run -d --net=host --privileged=true -v /etc/ceph:/etc/ceph -v /var/lib/ceph/:/var/lib/ceph -v /dev/:/dev/ -e OSD_DEVICE=/dev/vdd ceph-daemon osd_ceph_disk
-this order can't work.QQQ：
+Q：这样执行不通，改为下面
 docker run -d --net=host -v /etc/ceph:/etc/ceph -v /var/lib/ceph:/var/lib/ceph \
 -v /dev:/dev --privileged=true -e OSD_FORCE_ZAP=1 \
 -e OSD_DEVICE=/dev/sdb ceph/daemon osd_ceph_disk
@@ -30,20 +31,22 @@ docker exec 7c2ceeb668d3 ceph-osd -i 0/1
 查看osd状态
 docker exec 7c2ceeb668d3 ceph osd stat
 
-deploy MDS:
+1.3 启动MDS:
 docker run -d --net=host -v /etc/ceph:/etc/ceph -v /var/lib/ceph:/var/lib/ceph \
 -e CEPHFS_CREATE=1 ceph/daemon mds
 查看mds状态
 ceph mds stat 
 ---------
-203 deploy node
+在203布置OSD等模块：
 scp -r core@10.10.10.202:/etc/ceph/ core@10.10.10.204:/etc/
-keyring：permission denied。
+集群间考文件时keyring：permission denied。
 
 step2：ceph.conf和Ceph keyring都在step1中启动监测模块时生成，部署多节点，需要把config和keys分发到其他节点。
 为了方便，在docker中部署，用etcd存储ceph.conf和ceph keyring等配置文件。
+首先在单机中测试ceph模块service
 https://github.com/ceph/ceph-docker/tree/master/examples/coreos/units-etcd
 
+step3：通过http服务，其他node获取ceph.con和ceph keyring等配置文件。
 
 
 
