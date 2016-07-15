@@ -42,12 +42,17 @@ scp -r core@10.10.10.202:/etc/ceph/ core@10.10.10.204:/etc/
 集群间考文件时keyring：permission denied。
 
 step2：ceph.conf和Ceph keyring都在step1中启动监测模块时生成，部署多节点，需要把config和keys分发到其他节点。
+其他node如何获取ceph.con和ceph keyring等配置文件？上传方式有
+1. scp：依赖公私钥，
+2. ftp：coreos没有这个客户端，
+3. http服务：接受其他的文件，也提供下载。
 为了方便，在docker中部署，用etcd存储ceph.conf和ceph keyring等配置文件。
+ceph：配置文件base64，通常比较，zip，base64—1MB，写到etcd后。
+
 首先在单机中测试ceph模块service
 https://github.com/ceph/ceph-docker/tree/master/examples/coreos/units-etcd
 
-step3：通过http服务，其他node获取ceph.con和ceph keyring等配置文件。
-
+在cloud-config中写入ceph的service的配置文档。
 
 
 add mon,mds
