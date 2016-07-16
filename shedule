@@ -56,7 +56,8 @@ ceph：配置文件base64，通常比较，zip，base64—1MB，写到etcd后。
 ceph.sh
 sudo zip -r conf.zip /etc/ceph
 
-wget 
+wget http://10.10.10.192/conf.zip
+sudo mv conf.zip /etc/ceph/
 unzip conf.zip
 echo "$PWD"
 
