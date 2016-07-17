@@ -33,21 +33,6 @@ docker exec 7c2ceeb668d3 ceph-osd -i 0/1
 docker exec 7c2ceeb668d3 ceph osd stat
 
 
-docker run -d --net=host \
---privileged=true \
---pid=host \
--e JOURNAL_DIR=/var/lib/ceph/osd/journal \
--e HOSTNAME=10.10.10.205 \
--e KV_TYPE=etcd \
--e KV_IP=127.0.0.1 \
--e OSD_DEVICE=/dev/sdb \
--e OSD_FORCE_ZAP=1 \
--v /var/log/ceph:/var/log/ceph \
--v /var/lib/ceph:/var/lib/ceph \
--v /dev/:/dev/ \
-ceph/daemon osd
----提示Waiting for monitor setup to complete.
-
 ExecStart=/usr/bin/docker run --rm --name %p --net=host \
 -v /var/lib/ceph:/var/lib/ceph \
 -e MON_IP=${COREOS_PUBLIC_IPV4}:6789 \
@@ -145,7 +130,7 @@ MON_IP=192.168.0.71 -e CEPH_PUBLIC_NETWORK=192.168.0.0/24 ceph/daemon mon
 sudo docker run -d --net=host -v /etc/ceph:/etc/ceph -v /var/lib/ceph/:/var/lib/ceph/ -e \
 MON_IP=192.168.0.70 -e CEPH_PUBLIC_NETWORK=192.168.0.0/24 ceph/daemon mon
 
-向总理请教：
+
 现在一共有三个安装脚本，分别是install-first-mon.sh,install-osd.sh,install-other-mon.sh
 只要在cloud-config里写不同的服务，服务里wget相应的脚本并执行就可以了。类似文山
 ExecStart=wget http://...sh&&bash yyy.sh
@@ -166,8 +151,13 @@ scp ceph-install.zip atlas@10.10.10.192:~/install-ceph/
 #sudo cp ~/install-ceph/ceph-install.zip /usr/share/nginx/http/install-ceph/
 
 #cloud-config中的service配置
-#install-ceph.service
-ExecStart=cd /home/core && /usr/bin/wget http://10.10.10.192/install-ceph/ceph-install.zip && sudo unzip conf-install.zip && bash install-other-mon.sh
+-name: "install-ceph.service"
+command:restart
+content: |
+  [Unit]
+  Description=Install k8s services
+  [Service]
+  ExecStart=cd /home/core && /usr/bin/wget http://10.10.10.192/install-ceph/ceph-install.zip && sudo unzip conf-install.zip && bash install-other-mon.sh
 && bash install-osd.sh && bash install-mds.sh
 
 
@@ -175,11 +165,9 @@ ExecStart=cd /home/core && /usr/bin/wget http://10.10.10.192/install-ceph/ceph-i
 
 除了这三个，我在205上运行了mds.sh脚本。
 后续的问题：
-7个文件，一个是binary，全部都用base64转一遍写进去。
-etcd的value长度有没有限制，https://github.com/coreos/etcd/issues/2992, https://github.com/coreos/etcd/issues/1548
-如何实现全自动
-集群中不同机器之间mon的关系。
-如何利用三种不同的存储方式。
+1.7个文件，一个是binary，全部都用base64转一遍写进去。etcd的value长度有没有限制，https://github.com/coreos/etcd/issues/2992, https://github.com/coreos/etcd/issues/1548
+2.集群中不同机器之间mon的关系。
+3.如何利用三种不同的存储方式。
 
 
 
