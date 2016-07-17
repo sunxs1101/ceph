@@ -21,4 +21,6 @@ Scalable Hashing(CRUSH)的伪随机的数据分布算法放入集群节点中。
 3.MDSs: Ceph Metadata Server(MDS)代表Ceph Filesystem存储metadata（注意Ceph Block Devices和Ceph Object Storage不用MDS），Ceph Metadata Servers使得POSIX文件系统用户可以执行基本指令包括ls, find等，而不会给Ceph存储集群造成大的负担。
 Ceph将客户端数据作为对象存储在存储池中，通过CRUSH算法，Ceph计算哪个placement group应该保存对象，进一步计算哪个ceph OSD Daemon可以保存placement group。CRUSH算法使得Ceph存储集群可以做到规模化、再平衡、动态恢复。
 
-
+![](http://www.ibm.com/developerworks/cn/cloud/library/cl-openstackceph/figure01.png)
+-
+Ceph Filesystem, Ceph Object Storage和 Ceph Block Devices从Ceph Storage Cluster中读写数据。
