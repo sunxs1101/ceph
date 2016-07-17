@@ -166,6 +166,7 @@ scp ceph-install.zip atlas@10.10.10.192:~/install-ceph/
 #sudo cp ~/install-ceph/ceph-install.zip /usr/share/nginx/http/install-ceph/
 
 #cloud-config中的service配置
+#install-ceph.service
 ExecStart=cd /home/core && /usr/bin/wget http://10.10.10.192/install-ceph/ceph-install.zip && sudo unzip conf-install.zip && bash install-other-mon.sh
 && bash install-osd.sh && bash install-mds.sh
 
