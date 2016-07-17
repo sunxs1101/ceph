@@ -64,19 +64,15 @@ ceph：配置文件base64，通常比较，zip，base64—1MB，写到etcd后。
 指定mon IP，mon.sh，zip打包，base64 => 每个service中wget脚本，然后在cloud-config中配置。
 
 
-192中的上传目录：/usr/share/nginx/coreos-mirror
-
-ceph.sh
-sudo zip -r conf.zip /etc/ceph #压缩不要带路径
+192中的上传目录：/usr/share/nginx/http
 
 各服务器从192上下载，
 wget http://10.10.10.192/conf.zip
 sudo mv conf.zip /etc/ceph/
 sudo unzip conf.zip
-echo "$PWD"
-etcd中解压
 
-各自配置conf文件
+
+文山的配置
 - name: "install-k8s.service"
 command: restart
 content: |
@@ -90,16 +86,6 @@ ExecStart=cd /home/core && /usr/bin/wget http://10.10.10.192/install-k8s/worker.
 {{- end }}
 RemainAfterExit=yes
 Type=oneshot
-
-ExecStart=cd /etc/ceph && /usr/bin/wget http://10.10.10.192/conf.zip && sudo unzip conf.zip && bash ceph.sh
-
-
-
-
-首先在单机中测试ceph模块service
-https://github.com/ceph/ceph-docker/tree/master/examples/coreos/units-etcd
-
-在cloud-config中写入ceph的service的配置文档。
 
 
 add mon,mds
@@ -132,7 +118,7 @@ MON_IP=192.168.0.70 -e CEPH_PUBLIC_NETWORK=192.168.0.0/24 ceph/daemon mon
 
 
 现在一共有三个安装脚本，分别是install-first-mon.sh,install-osd.sh,install-other-mon.sh
-只要在cloud-config里写不同的服务，服务里wget相应的脚本并执行就可以了。类似文山
+只要在cloud-config里写不同的服务，服务里wget相应的脚本并执行就可以了。
 ExecStart=wget http://...sh&&bash yyy.sh
 全自动安装流程：配置通过etcd写入，脚本通过http下载
 1.mon在某台机器上执行，写入etcd。其他的mon获取etcd，然后运行自己的mon。
@@ -163,10 +149,10 @@ content: |
 
 
 
-除了这三个，我在205上运行了mds.sh脚本。
+我在205上运行了mds.sh脚本。
 后续的问题：
 1.7个文件，一个是binary，全部都用base64转一遍写进去。etcd的value长度有没有限制，https://github.com/coreos/etcd/issues/2992, https://github.com/coreos/etcd/issues/1548
-2.集群中不同机器之间mon的关系。
+2.集群中不同机器之间mon的关系，多少个mon。
 3.如何利用三种不同的存储方式。
 
 
