@@ -153,21 +153,22 @@ ExecStart=wget http://...sh&&bash yyy.sh
 1.mon在某台机器上执行，写入etcd。其他的mon获取etcd，然后运行自己的mon。
 2.其他机器在cloud-config中，执行服务，获取,运行三个脚本。
 
-scp core@10.10.10.206:~/install*.sh ./ 再加上一个install-other-mon.sh文件，一共4个，拷贝到192上。实际上不需要install-first-mon.sh
-scp install-*.sh atlas@10.10.10.192:~/install-ceph/
-在192上移动/install-ceph/到/usr/share/nginx/http/install-ceph
-sudo cp ~/install-ceph/* /usr/share/nginx/http/install-ceph/
+#!/bin/bash
 
-ExecStart=/usr/bin/wget http://10.10.10.192/conf.zip && sudo unzip conf.zip && bash install-other-mon.sh
-wget难道只能下载一个文件。在客户端将sh压缩，
+#把x.sh添加到install-first-mon.sh
+#
+#scp core@10.10.10.206:~/install*.sh ./ 
+#再加上一个install-other-mon.sh文件，一共4个，拷贝到192上。实际上不需要install-first-mon.sh
+#在本地生成install-other-mon.sh，install-osd.sh, install-mds.sh
 zip ceph-install.zip ./install*.sh
 scp ceph-install.zip atlas@10.10.10.192:~/install-ceph/
-sudo cp ~/install-ceph/ceph-install.zip /usr/share/nginx/http/install-ceph/
-/usr/bin/wget http://10.10.10.192/install-ceph/conf.zip
+#在192上移动/install-ceph/到/usr/share/nginx/http/install-ceph
+#sudo cp ~/install-ceph/ceph-install.zip /usr/share/nginx/http/install-ceph/
 
-cloud-config中的service配置
-ExecStart=cd /etc/ceph && /usr/bin/wget http://10.10.10.192/install-ceph/ceph-install.zip && sudo unzip conf.zip && bash install-other-mon.sh
+#cloud-config中的service配置
+ExecStart=/usr/bin/wget http://10.10.10.192/install-ceph/ceph-install.zip && sudo unzip conf-install.zip && bash install-other-mon.sh
 && bash install-osd.sh && bash install-mds.sh
+
 
 
 
