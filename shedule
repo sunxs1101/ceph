@@ -3,8 +3,12 @@ ceph统一的、分布式的存储系统，可以提供对象存储、块存储�
 Based upon RADOS, Ceph Storage Clusters consist of two types of daemons: a Ceph OSD Daemon (OSD) stores data as objects on a storage node; and a Ceph Monitor (MON) maintains a master copy of the cluster map. A Ceph Storage Cluster may contain thousands of storage nodes. A minimal system will have at least one Ceph Monitor and two Ceph OSD Daemons for data replication.
 The Ceph Filesystem, Ceph Object Storage and Ceph Block Devices read data from and write data to the Ceph Storage Cluster.
 ceph Filesystem clients需要ceph Metadata Server，ceph Block Devices和Ceph Object Storage不用MDS。
+---
+http://www.ibm.com/developerworks/cn/cloud/library/cl-openstackceph/
+与任何经典的分布式文件系统中一样，放入集群中的文件是条带化的，依据一种称为Ceph Controlled Replication Under
+Scalable Hashing(CRUSH)的伪随机的数据分布算法放入集群节点中。
 
-
+---
 根据Ceph官方文档推荐，一个ceph storage cluster需要至少一个ceph monitor和至少两个ceph OSD Daemons来获得avtive-clean的状态.
 step1: 利用docker在集群中布置一个ceph monitor和多个ceph OSD Daemons
 202作monitor，203作OSD，
@@ -148,11 +152,37 @@ MON_IP=192.168.0.70 -e CEPH_PUBLIC_NETWORK=192.168.0.0/24 ceph/daemon mon
 现在一共有三个安装脚本，分别是install-first-mon.sh,install-osd.sh,install-other-mon.sh
 只要在cloud-config里写不同的服务，服务里wget相应的脚本并执行就可以了。类似文山
 ExecStart=wget http://...sh&&bash yyy.sh
+全自动安装流程：配置通过etcd写入，脚本通过http下载
+1.mon在某台机器上执行，写入etcd。其他的mon获取etcd，然后运行自己的mon。
+2.其他机器在cloud-config中，执行服务，获取,运行三个脚本。
+
+scp core@10.10.10.206:~/install*.sh ./ 再加上一个install-other-mon.sh文件，一共4个，拷贝到192上。实际上不需要install-first-mon.sh
+scp install-*.sh atlas@10.10.10.192:~/install-ceph/
+在192上移动/install-ceph/到/usr/share/nginx/http/install-ceph
+sudo cp ~/install-ceph/* /usr/share/nginx/http/install-ceph/
+
+ExecStart=/usr/bin/wget http://10.10.10.192/conf.zip && sudo unzip conf.zip && bash install-other-mon.sh
+wget难道只能下载一个文件。在客户端将sh压缩，
+zip ceph-install.zip ./install*.sh
+scp ceph-install.zip atlas@10.10.10.192:~/install-ceph/
+sudo cp ~/install-ceph/ceph-install.zip /usr/share/nginx/http/install-ceph/
+/usr/bin/wget http://10.10.10.192/install-ceph/conf.zip
+
+cloud-config中的service配置
+ExecStart=cd /etc/ceph && /usr/bin/wget http://10.10.10.192/install-ceph/ceph-install.zip && sudo unzip conf.zip && bash install-other-mon.sh
+&& bash install-osd.sh && bash install-mds.sh
+
 
 
 除了这三个，我在205上运行了mds.sh脚本。
-下面的问题：
+后续的问题：
+7个文件，一个是binary，全部都用base64转一遍写进去。
+etcd的value长度有没有限制，https://github.com/coreos/etcd/issues/2992, https://github.com/coreos/etcd/issues/1548
+如何实现全自动
 集群中不同机器之间mon的关系。
+如何利用三种不同的存储方式。
+
+
 
 
 
