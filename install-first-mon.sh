@@ -51,3 +51,16 @@ docker run -d --net=host \
   -e CEPH_PUBLIC_NETWORK=$ip_addr$(netmask_to_cidr $net_mask) \
   ceph/daemon mon
 
+for f in \
+/etc/ceph/ceph.client.admin.keyring \
+/etc/ceph/ceph.conf \
+/etc/ceph/ceph.mon.keyring \
+/etc/ceph/monmap \
+/var/lib/ceph/bootstrap-mds/ceph.keyring \
+/var/lib/ceph/bootstrap-osd/ceph.keyring \
+/var/lib/ceph/bootstrap-rgw/ceph.keyring
+do
+v=$(sudo base64 $f)
+etcdctl set /unisound/ceph-dist$f "$v"
+done
+
