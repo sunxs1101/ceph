@@ -13,7 +13,7 @@ Scalable Hashing(CRUSH)的伪随机的数据分布算法放入集群节点中。
 
 基于RADOS机制(RADOS:A Scalable,Reliable Storage Service for Petabyte-scale Storage Clusters,http://ceph.com/papers/weil-rados-pdsw07.pdf), Ceph可以提供理论上没有上限的集群规模可扩展性。 
 
-# 2.ceph存储集群
+# 2.Ceph存储集群
 ![](http://www.ibm.com/developerworks/cn/linux/l-ceph/figure1.gif)
 
 Ceph Client 是 Ceph 文件系统的用户客户端，Ceph Metadata Daemon 提供了元数据服务器，而 Ceph Object Storage Daemon 提供了实际存储（对数据和元数据两者）。最后，Ceph Monitor 提供了集群管理。
@@ -21,7 +21,9 @@ Ceph Client 是 Ceph 文件系统的用户客户端，Ceph Metadata Daemon 提�
 ![](http://docs.ceph.com/docs/master/_images/ditaa-cffd08dd3e192a5f1d724ad7930cb04200b9b425.png)
 
 ## 集群部署
-Ceph Storage Cluster包括两种类型的daemons: 一个Ceph OSD Daemon(Ojbect Storage Device,OSD)将数据作为对象存储到存储节点，一个Ceph Monitor(MON)维护集群映射的master版本，一个Ceph存储集群需要至少一个Ceph Monitor和至少两个Ceph OSD Daemons，当运行Ceph Filesystem Clients时需要Ceph Metadata Server。
+Ceph Storage Cluster包括两种类型的daemons: 一个Ceph OSD Daemon(Ojbect Storage Device,OSD)将数据作为对象存储到存储节点，一个Ceph Monitor(MON)维护集群映射的master版本。
+
+![](http://www.ibm.com/developerworks/cn/cloud/library/cl-openstackceph/figure02.png)
 
 - <a>OSDs</a>: Ceph OSD Daemon 存储数据，处理数据复制、恢复、填充、再平衡，通过检查其他Ceph OSD Daemons 的heartbeat来提供监测信息给Ceph Monitors。当集群做数据拷贝（默认是做数据的三个拷贝，但可调整）时，一个ceph存储集群需要至少两个ceph OSD Daemons来获得一个active+clean的状态。
 
@@ -29,29 +31,32 @@ Ceph Storage Cluster包括两种类型的daemons: 一个Ceph OSD Daemon(Ojbect S
 
 - <a>MDSs</a>: Ceph Metadata Server(MDS)代表Ceph Filesystem存储metadata（注意Ceph Block Devices和Ceph Object Storage不用MDS），Ceph Metadata Servers使得POSIX文件系统用户可以执行基本指令包括ls, find等，而不会给Ceph存储集群造成大的负担。
 
+一个Ceph存储集群需要至少一个Ceph Monitor和至少两个Ceph OSD Daemons，当运行Ceph Filesystem Clients时需要Ceph Metadata Server。
+
 Ceph将客户端数据作为对象存储在存储池中，通过CRUSH算法，Ceph计算哪个placement group应该保存对象，进一步计算哪个ceph OSD Daemon可以保存placement group。CRUSH算法使得Ceph存储集群可以做到规模化、再平衡、动态恢复。
 
-用一个Ceph Monitor和两个Ceph OSD Daemons建立一个ceph Storage Cluster，一旦集群达到active+clean状态，通过增加第三个Ceph OSD Daemon、一个Metadata Server和两个Ceph Monitors来扩大集群，为了达到最好的结果，在你的admin node创建一个目录来保存配置文件和ceph-depoy为集群生成的keys。
-## 集群配置文件
-
-在某台机器上运行mon后，在/etc/ceph/和/var/lib/ceph生成配置文档，需要把配置文件分布到其他机器，在其他机器安装mon，
-1. 在k8s集群中用etcd写入/etc/ceph/下四个配置文件和/var/lib/ceph/bootstrap-rgw|bootstrap-mds|bootstrap-osd/ceph.keyring三个keyring文件，实现集群中配置共享。这种方法的缺点是要指定第一台机器，不能全自动安装。
-2. 用ceph自带kv，参考https://github.com/ceph/ceph-docker/blob/master/ceph-releases/jewel/ubuntu/14.04/daemon/README.md
+用一个Ceph Monitor和两个Ceph OSD Daemons建立一个ceph Storage Cluster后，一旦集群达到active+clean状态，通过增加第三个Ceph OSD Daemon、一个Metadata Server和两个Ceph Monitors来扩大集群，为了达到最好的结果，在你的admin node创建一个目录来保存配置文件和ceph-depoy为集群生成的keys。
 
 Ceph的支持三种存储，分别是块存储，文件存储和对象存储
-# 3.1 Block Device
+## 3.1 Block Device
 在此之前先保证Ceph Storage Cluster在active + clean状态
 基于块的存储接口是最常见的用rotating media，如硬盘/CDs/floppy disks，来存储数据的方法。
 Ceph block devices是厚磁盘，大小可调节，在集群的多OSD中存储条带化数据。
 rbd--manage rados block device(RBD)images
 rbd用于操作rados block device(RBD)镜像，被linux rbd driver和rbd storage driver用于QEMU/KVM。
 
-# 3.2 Filesystem
+## 3.2 Filesystem
 Ceph Filesystem是一个POSIX-compliant文件系统，使用Ceph Storage Cluster来存储数据，它用同样的Ceph Storage Cluster系统作为Ceph Block Devices, Ceph Object Storage，with its S3和Swift APIs或native binding.
 用Ceph Filesystem需要在你的Ceph Storage Cluster上至少一个Ceph Metadata Server，Metadata Server(MDS)代表Ceph Filesystem存储metadata
 
-# 3.3 Object Storage
+## 3.3 Object Storage
 基于RADOS，Ceph Storage Cluster是所有Ceph deployments的基础，对于通过众多客户端或网关（RADOSGW、RBD 或 CephFS）执行的每个操作，数据会进入 RADOS 或者可以从中读取数据，如下图1所示。Ceph Storage Cluster包括两种类型的daemons: 一个Ceph OSD Daemon(OSD)将数据作为对象存储到存储节点，一个Ceph Monitor(MON)维护集群映射的master版本，如下图2所示。一个Ceph Storage Cluster可能包括数千个Storage nodes，一个最小系统至少有一个Ceph Monitor和两个Ceph OSD Daemons来实现data replication。
+
+## 集群配置文件
+
+在某台机器上运行mon后，在/etc/ceph/和/var/lib/ceph生成配置文档，需要把配置文件分布到其他机器，在其他机器安装mon，
+1. 在k8s集群中用etcd写入/etc/ceph/下四个配置文件和/var/lib/ceph/bootstrap-rgw|bootstrap-mds|bootstrap-osd/ceph.keyring三个keyring文件，实现集群中配置共享。这种方法的缺点是要指定第一台机器，不能全自动安装。
+2. 用ceph自带kv，参考https://github.com/ceph/ceph-docker/blob/master/ceph-releases/jewel/ubuntu/14.04/daemon/README.md
 
 图1
 --
