@@ -1,13 +1,24 @@
-Ceph是一个统一的、分布式的存储系统，可以提供高性能，高可靠性和高可扩展性。“统一”是指Ceph系统可以提供对象存储、块存储和文件系统存储三种功能，“分布式”意味着可以实现集群规模的可扩展性。
+Ceph是一个统一的、分布式的存储系统，可以提供高性能，高可靠性和高可扩展性。“统一”是指Ceph系统可以提供对象存储、块存储和文件系统存储三种功能，“分布式”意味着可以实现集群规模的可扩展性，节点间可以互相通信，动态实现数据的复制和分发，从而管理海量数据。
+与任何经典的分布式文件系统中一样，放入集群中的文件是条带化的，依据一种称为Ceph Controlled Replication Under
+Scalable Hashing(CRUSH)的伪随机的数据分布算法放入集群节点中。
 # 1.Ceph架构
+![](http://docs.ceph.com/docs/master/_images/stack.png)
+与Ceph集群的交互方式有：
+    1.RADOSGW(Reliable Autonomic distributed Object Store Gateway)是一种RESTful接口，应用程序与其通信，将对象存储在集群中。
+    2.RBD(RODOS Block Device)是一个完全分布式的块存储。
+    3.CephFS是一个分布式文件系统。
+    4.LIBRADOS库允许程序直接访问RADOS。
+
+基于RADOS机制(参考论文RADOS:A Scalable,Reliable Storage Service for Petabyte-scale Storage Clusters,http://ceph.com/papers/weil-rados-pdsw07.pdf), Ceph可以提供理论上没有上限的集群规模可扩展性。 
+
+
 
 ![](http://www.ibm.com/developerworks/cn/linux/l-ceph/figure1.gif)
 
 参考：http://docs.ceph.com/docs/master/, http://www.ibm.com/developerworks/cn/cloud/library/cl-openstackceph/
 Ceph Client 是 Ceph 文件系统的用户。Ceph Metadata Daemon 提供了元数据服务器，而 Ceph Object Storage Daemon 提供了实际存储（对数据和元数据两者）。最后，Ceph Monitor 提供了集群管理。
 
-与任何经典的分布式文件系统中一样，放入集群中的文件是条带化的，依据一种称为Ceph Controlled Replication Under
-Scalable Hashing(CRUSH)的伪随机的数据分布算法放入集群节点中。
+
 
 
 # 2.ceph部署
