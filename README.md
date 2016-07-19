@@ -55,9 +55,27 @@ Ceph Storage Cluster从Ceph Clients接收数据，不管这个数据来自Ceph B
 传统的有中心式集群，客户端与集群的中心节点交互，中心节点作为集群的单个入口，会对集群的性能和可扩展性造成限制。中心节点性能下降，相应的整个系统也会下降。Ceph通过使用CRUSH算法来去除集群中心性，作为一个无中心集群，使得客户端可以直接与Ceph OSD Daemons直接交互，Ceph OSD Daemons在其他节点上创建对象复制品来保证数据的安全和高利用性，也使用monitors集群来保证高利用性。
 
 ## CLUSTER MAP
+- The Monitor Map
+- The OSD Map
+- The PG Map
+- The CRUSH Map
+- The MDS Map
+
+## HIGH AVAILABILITY MONITORS
+
+在Ceph Clients读写数据前，他们必须与Ceph Monitor通信来获取集群映射的最近拷贝。Ceph Storage Cluster可以只有单个monitor，然而，这样容易出问题。为了增加可靠性和容错性，Ceph支持monitors集群。在monitors集群中，延迟和其他故障会造成一个或多个monitor落后于集群当前的状态。因此，Ceph通常使用大部分monitors和Paxos算法来建立monitors关于当前集群状态的一致性。
+### Monitor Config Reference
+所有Ceph Storage Clusters至少一个monitor，monitor配置文件比较一致，你可以添加，删除或取代集群中的一个monitor。
+Ceph Monitors有一个cluster map的“master copy”，Ceph Client仅仅通过链接一个Monitor，获取当前的cluster map就可以确定所有Monitors，OSD Daemons和Ceph Metadata SErvers的位置。计算目标位置的能力使得Ceph Client可以与Ceph OSD Daemons直接通信，这是Ceph高扩展性和高性能的一个重要方面。
+Ceph Monitor的主要角色式维护cluster map的master copy，它将monitor services的所有变化写到单个Paxos，Paxos再写到key/value存储。
+Monitors可以在同步操作期间查询cluster map的最近版本。
+
+![](http://docs.ceph.com/docs/master/_images/ditaa-ae8fc6ae5b4014f064a0bed424507a7a247cd113.png)
 
 
-## 集群配置文件
+#HIGH AVAILABILITY AUTHENTICATION
+Ceph提供了cephx认证系统来认证用户和daemons，
+## ceph docker集群配置
 
 在某台机器上运行mon后，在/etc/ceph/和/var/lib/ceph生成配置文档，需要把配置文件分布到其他机器，在其他机器安装mon，
 1. 在k8s集群中用etcd写入/etc/ceph/下四个配置文件和/var/lib/ceph/bootstrap-rgw|bootstrap-mds|bootstrap-osd/ceph.keyring三个keyring文件，实现集群中配置共享。这种方法的缺点是要指定第一台机器，不能全自动安装。
