@@ -71,6 +71,10 @@ Ceph Monitor的主要角色式维护cluster map的master copy，它将monitor se
 Monitors可以在同步操作期间查询cluster map的最近版本。
 
 ![](http://docs.ceph.com/docs/master/_images/ditaa-ae8fc6ae5b4014f064a0bed424507a7a247cd113.png)
+Identify two numbers for your cluster:
+
+    The number of OSDs.
+    The total capacity of the cluster
 
 
 #HIGH AVAILABILITY AUTHENTICATION
