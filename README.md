@@ -1,4 +1,4 @@
-Ceph是一个统一的、分布式的文件存储系统，可以提供高性能，高可靠性和高可扩展性。“统一”是指Ceph系统可以提供对象存储、块存储和文件系统存储三种功能，“分布式”意味着可以实现集群规模的可扩展性，节点间可以互相通信，动态实现数据的复制和分发，从而管理海量数据。
+Ceph是一个统一的、分布式的文件存储系统，可以提供高性能，高可靠性和高可扩展性。“统一”是指Ceph系统可以提供对象存储、块存储和文件系统存储三种功能，“分布式”是指集群没有中心并且有集群规模有很好的可扩展性，节点间可以互相通信，动态实现数据的复制和分发，从而管理海量数据。
 与任何经典的分布式文件系统中一样，放入集群中的文件是条带化的，依据一种称为Ceph Controlled Replication Under
 Scalable Hashing(CRUSH)的伪随机的数据分布算法放入集群节点中。
 
@@ -7,7 +7,7 @@ Scalable Hashing(CRUSH)的伪随机的数据分布算法放入集群节点中。
 
 底层是基础存储系统RADOS（Reliable Autonomic Distributed Object Store），基于RADOS，Ceph可以提供理论上没有上限的集群规模可扩展性。 上层与Ceph集群的交互方式有：
 
-        1.RADOSGW(Reliable Autonomic distributed Object Store Gateway)是一种RESTful接口，应用程序与其通信，将对象存储在集群中。
+        1.RADOSGW(RADOS Gateway)是一种RESTful接口，应用程序与其通信，将对象存储在集群中。
         2.RBD(RODOS Block Device)是一个完全分布式的块存储。
         3.CephFS是一个分布式文件系统。
         4.LIBRADOS库允许程序直接访问RADOS。
@@ -39,18 +39,14 @@ Ceph将客户端数据作为对象存储在存储池中，通过CRUSH算法，Ce
 # 3 Ceph存储方式
 Ceph支持三种存储Ceph Filesystem, Ceph Object Storage和 Ceph Block Devices，他们从Ceph Storage Cluster中读写数据。
 ## 3.1 Block Device
-在此之前先保证Ceph Storage Cluster在active + clean状态
-基于块的存储接口是最常见的用rotating media，如硬盘/CDs/floppy disks，来存储数据的方法。
-Ceph block devices是厚磁盘，大小可调节，在集群的多OSD中存储条带化数据。
-rbd--manage rados block device(RBD)images
+在此之前先保证Ceph Storage Cluster在active + clean状态，基于块的存储接口是最常见的用rotating media，如硬盘/CDs/floppy disks，来存储数据的方法。Ceph block devices是厚磁盘，大小可调节，在集群的多OSD中存储条带化数据。
 rbd用于操作rados block device(RBD)镜像，被linux rbd driver和rbd storage driver用于QEMU/KVM。
 
 ## 3.2 Filesystem
-Ceph Filesystem是一个POSIX-compliant文件系统，使用Ceph Storage Cluster来存储数据，它用同样的Ceph Storage Cluster系统作为Ceph Block Devices, Ceph Object Storage，with its S3和Swift APIs或native binding.
-用Ceph Filesystem需要在你的Ceph Storage Cluster上至少一个Ceph Metadata Server，Metadata Server(MDS)代表Ceph Filesystem存储metadata
+Ceph Filesystem是一个POSIX-compliant文件系统，使用Ceph Storage Cluster来存储数据，它用同样的Ceph Storage Cluster系统作为Ceph Block Devices, Ceph Object Storage，with its S3和Swift APIs或native binding.用Ceph Filesystem需要在你的Ceph Storage Cluster上至少一个Ceph Metadata Server，Metadata Server(MDS)代表Ceph Filesystem存储metadata。
 
 ## 3.3 Object Storage
-基于RADOS，Ceph Storage Cluster是所有Ceph deployments的基础，对于通过众多客户端或网关（RADOSGW、RBD 或 CephFS）执行的每个操作，数据会进入 RADOS 或者可以从中读取数据，如下图1所示。Ceph Storage Cluster包括两种类型的daemons: 一个Ceph OSD Daemon(OSD)将数据作为对象存储到存储节点，一个Ceph Monitor(MON)维护集群映射的master版本，如下图2所示。一个Ceph Storage Cluster可能包括数千个Storage nodes，一个最小系统至少有一个Ceph Monitor和两个Ceph OSD Daemons来实现data replication。
+基于RADOS，Ceph Storage Cluster是所有Ceph deployments的基础，对于通过众多客户端或网关（RADOSGW、RBD 或 CephFS）执行的每个操作，数据会进入 RADOS 或者可以从中读取数据。Ceph Storage Cluster包括两种类型的daemons: 一个Ceph OSD Daemon(OSD)将数据作为对象存储到存储节点，一个Ceph Monitor(MON)维护集群映射的master版本。一个Ceph Storage Cluster可能包括数千个Storage nodes，一个最小系统至少有一个Ceph Monitor和两个Ceph OSD Daemons来实现data replication。
 
 ## 集群配置文件
 
@@ -79,3 +75,4 @@ ENTRYPOINT设定容器启动时执行entrypoint.sh
 - <a></a>http://www.ibm.com/developerworks/cn/cloud/library/cl-openstackceph/
 - <a>rados论文</a> http://ceph.com/papers/weil-rados-pdsw07.pdf
 - <a>CRUCH数据分布算法</a> http://ceph.com/papers/weil-crush-sc06.pdf
+- <a>rbd-voluem</a> https://github.com/ceph/ceph-docker/tree/master/rbd-volume
