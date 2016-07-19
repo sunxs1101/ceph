@@ -48,6 +48,15 @@ Ceph Filesystem是一个POSIX-compliant文件系统，使用Ceph Storage Cluster
 ## 3.3 Object Storage
 基于RADOS，Ceph Storage Cluster是所有Ceph deployments的基础，对于通过众多客户端或网关（RADOSGW、RBD 或 CephFS）执行的每个操作，数据会进入 RADOS 或者可以从中读取数据。Ceph Storage Cluster包括两种类型的daemons: 一个Ceph OSD Daemon(OSD)将数据作为对象存储到存储节点，一个Ceph Monitor(MON)维护集群映射的master版本。一个Ceph Storage Cluster可能包括数千个Storage nodes，一个最小系统至少有一个Ceph Monitor和两个Ceph OSD Daemons来实现data replication。
 
+## 存储数据 STORING DATA
+Ceph Storage Cluster从Ceph Clients接收数据，不管这个数据来自Ceph Bloak Device, Ceph Object Storage, Ceph Filesystem还是你通过librados创造的指令，它都将数据存储为对象，每个对象对应文件系统中的一个文件，被存储在Object Storage Device中。OSD Daemons在存储磁盘中执行读写操作
+![](http://docs.ceph.com/docs/master/_images/ditaa-518f1eba573055135eb2f6568f8b69b4bb56b4c8.png)
+##SCALABILITY AND HIGH AVAILABILITY
+传统的有中心式集群，客户端与集群的中心节点交互，中心节点作为集群的单个入口，会对集群的性能和可扩展性造成限制。中心节点性能下降，相应的整个系统也会下降。Ceph通过使用CRUSH算法来去除集群中心性，作为一个无中心集群，使得客户端可以直接与Ceph OSD Daemons直接交互，Ceph OSD Daemons在其他节点上创建对象复制品来保证数据的安全和高利用性，也使用monitors集群来保证高利用性。
+
+## CLUSTER MAP
+
+
 ## 集群配置文件
 
 在某台机器上运行mon后，在/etc/ceph/和/var/lib/ceph生成配置文档，需要把配置文件分布到其他机器，在其他机器安装mon，
@@ -71,8 +80,9 @@ ENTRYPOINT设定容器启动时执行entrypoint.sh
 
 
 ## 参考文献
-- <a>ceph</a> http://docs.ceph.com/docs/master/
+- <a>ceph官方文档</a> http://docs.ceph.com/docs/master/
+- <a>Ceph: A Scalable, High-Performance Distributed File System</a>http://ceph.com/papers/weil-ceph-osdi06.pdf
 - <a></a>http://www.ibm.com/developerworks/cn/cloud/library/cl-openstackceph/
 - <a>rados论文</a> http://ceph.com/papers/weil-rados-pdsw07.pdf
-- <a>CRUCH数据分布算法</a> http://ceph.com/papers/weil-crush-sc06.pdf
+- <a>CRUCH-Controlled,Scalable,Decentralized Placement of Replicated Data</a> http://ceph.com/papers/weil-crush-sc06.pdf
 - <a>rbd-voluem</a> https://github.com/ceph/ceph-docker/tree/master/rbd-volume
