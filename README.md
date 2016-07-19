@@ -5,7 +5,8 @@ Scalable Hashing(CRUSH)的伪随机的数据分布算法放入集群节点中。
 # 1.Ceph架构
 ![](http://docs.ceph.com/docs/master/_images/stack.png)
 
-    与Ceph集群的交互方式有：
+底层是基础存储系统RADOS（Reliable Autonomic Distributed Object Store），上层与Ceph集群的交互方式有：
+
         1.RADOSGW(Reliable Autonomic distributed Object Store Gateway)是一种RESTful接口，应用程序与其通信，将对象存储在集群中。
         2.RBD(RODOS Block Device)是一个完全分布式的块存储。
         3.CephFS是一个分布式文件系统。
