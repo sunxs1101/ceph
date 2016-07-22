@@ -114,6 +114,7 @@ librados 就是一个该协议的编码库形式的实现。所有的 Ceph clien
 
 ##### 2.新建Ceph block device
 rbd命令行： 在 Ubuntu 上，你安装了 ceph-common 就可以得到该工具，其命令行格式为：
+###### rbd实际是kernel module的方法
 
 rbd create rbd1 --size 10240 --name client.rbd
 rbd ls --name client.rbd
