@@ -83,7 +83,15 @@ Ceph0.59之前的版本，将数据存储在文件中，可以通过ls和cat查�
 ### 集群容量
 假设一个集群中，有33个Ceph Nodes, 每台主机有一个OSD Daemon, 每个OSD Daemon从3TB驱动中读写数据，这样集群最大的实际容量是99TB，如果mon osd full ratio为0.95，当剩余容量到5TB时，集群就不会容许Clients继续读写数据，集群的可操作容量为95TB，而非99TB。
 ### 高可用性认证
-Ceph提供了cephx认证系统来认证用户和daemons，Client和Monitor的key文件分别是/etc/ceph/ceph.client.admin.keyring和ceph.mon.keyring.
+Ceph提供了cephx认证系统来认证用户和daemons，Note, The cephx protocol does not address data encryption in transport (e.g., SSL/TLS) or encryption at rest.Cephx使用共享私钥来认证，这意味着客户端和monitor集群都可以有client的私钥拷贝。
+Ceph可扩展性的关键特征是避免集中式接口，clients必须直接与OSDs交互。
+用户恳求客户端来与monitor交互，不同于kerberos，每个monitor可以认证用户并分发keys，因此当用cephx时，没有单个节点失败或有瓶颈。monitor返回一个包含session key的认证数据结构给用户，这个session key被用户永久的私钥加密，因此只有这个用户可以从monitor索取service，客户端用session key来向monitor索取想要的service，monitor提供客户端一个ticket，这个ticket授权客户端连接到OSDs（OSDs才是真正处理数据的），monitor和OSDs共享这个secret，client可以利用monitor提供的ticket与任意OSD或metadata服务器相连。类似kerberos，cephx ticket有期限，
+
+Client和Monitor的key文件分别是/etc/ceph/ceph.client.admin.keyring和ceph.mon.keyring.
+
+
+
+
 ## Ceph Docker集群配置
 
 在某台机器上运行mon后，在/etc/ceph/和/var/lib/ceph生成配置文档，需要把配置文件分布到其他机器。
