@@ -140,7 +140,8 @@ rbd map --image rbd1 --name client.rbd
 运行docker build . 
 未完..
 ### 问题梳理
- - qemu与linux kernel区别
+ - qemu与linux kernel区别，host与虚拟机区别
+ - rbd命令行是走linux kernel路径
  - librbd客户端与如何认证
  - 客户端与用户
  - 上传文件不行
