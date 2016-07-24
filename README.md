@@ -139,7 +139,12 @@ rbd map --image rbd1 --name client.rbd
 根据ceph/ceph-docker项目，通过Docker容器将Ceph RBD volume挂载到主机。
 运行docker build . 
 未完..
-
+### 问题梳理
+ - qemu与linux kernel区别
+ - librbd客户端与如何认证
+ - 客户端与用户
+ - 上传文件不行
+ - docker安装补上
 
 ## 参考文献
 - ceph官方文档 http://docs.ceph.com/docs/master/
