@@ -27,3 +27,4 @@ docker不支持14.10utopic，一般安装utrusty。
  18. 1737  vi helloworld.cpp
  19. 1738  sudo apt-get -f install emacs24
 
+http://mirrors.aliyun.com/help/ubuntu
