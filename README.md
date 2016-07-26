@@ -133,23 +133,17 @@ client需要Ceph keys来连接Ceph集群，Ceph会创建一个默认的用户cli
 ##### 2.在Ceph中创建一个块设备
 rbd实际是kernel module的方法，下面介绍docker rbd和linux rbd两种操作方法
  1. linux rbd
-rbd create rbd1 --size 10240 --name client.rbd;
+   - rbd create rbd1 --size 10240 --name client.rbd;
+   - rbd ls --name client.rbd;
+   - rbd --image rbd1 info --name client.rbd; 
 
-rbd ls --name client.rbd;
-
-rbd --image rbd1 info --name client.rbd; 
-
-出现问题：
-crawler@Crawler-01:~$ sudo rbd map docker_registry
-
- - rbd: sysfs write failed
- - rbd: map failed: (2) No such file or directory
+执行crawler@Crawler-01:~$ sudo rbd map docker_registry后，出现以下问题：
+   - rbd: sysfs write failed
+   - rbd: map failed: (2) No such file or directory
+ 
  2. docker rbd
-```
-sudo docker run --rm -v /etc/ceph:/etc/ceph ceph/rbd ls
-
-sudo docker run --rm -v /etc/ceph:/etc/ceph ceph/rbd info docker-registry
-```
+   - sudo docker run --rm -v /etc/ceph:/etc/ceph ceph/rbd ls
+   - sudo docker run --rm -v /etc/ceph:/etc/ceph ceph/rbd info docker-registry
 
 ##### 3.映射Ceph block device到本地client或docker volume的块设备
 rbd map --image rbd1 --name client.rbd
