@@ -10,6 +10,8 @@ http://www.open-open.com/lib/view/open1451802607011.html
 
  - emacs http://www.gnu.org/software/emacs/download.html
  - http://www.gnu.org/software/emacs/manual/pdf/emacs.pdf
+ - http://www.jesshamrick.com/2012/09/10/absolute-beginners-guide-to-emacs/
+ - https://www.gnu.org/software/emacs/tour/
 
 #vim用法总结
 
