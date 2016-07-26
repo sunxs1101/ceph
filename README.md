@@ -112,28 +112,40 @@ librados 就是一个该协议的编码库形式的实现。所有的 Ceph clien
 ![](http://images2015.cnblogs.com/blog/697113/201509/697113-20150925100559037-1388278685.jpg)
 
 
-其调用层次为 命令行rbd -> librbd（rbd.py) -> librados(rados.py连接集群）：
+其调用层次为 命令行rbd -> librbd（rbd.py) -> librados(rados.py连接集群）
+
+### 寻址过程
+补上三层映射图。。
+
 ##### 1.配置ceph客户端
  - lsb_release -a , uname -r 
  - modprobe rbd---检查kernel对RBD的支持。
- - 安装ceph
- - 拷贝ceph.conf到节点
- - ceph与集群间keyring，/etc/ceph/ceph.client.rbd.keyring放到/etc/ceph/keyring
+ - 安装ceph，ceph-common来使用rbd命令行
+```
+client需要Ceph keys来连接Ceph集群，Ceph会创建一个默认的用户client.admin，它可以全连接到Ceph集群，不推荐将client.admin keys与client节点共享。更好的方法是创建有独立keys的新用户，连接到指定的Ceph pools。 
+--name client.rbd表示新建的一个用户。
+``` 
+ - 拷贝集群中的配置文件ceph.conf到client
+  scp {ceph-mon}:/etc/ceph/ceph.client.admin.keyring {ceph-client}/etc/ceph/
+ - 修改ceph-client上ceph-conf
 
-##### 2.新建Ceph block device
-rbd命令行： 在 Ubuntu 上，你安装了 ceph-common 就可以得到该工具，其命令行格式为：
-###### rbd实际是kernel module的方法
-
+##### 2.在Ceph中创建一个块设备
+rbd实际是kernel module的方法，下面介绍docker rbd和linux rbd两种操作方法
+ 1. linux rbd
+ ```
 rbd create rbd1 --size 10240 --name client.rbd
 rbd ls --name client.rbd
-rbd --image rbd1 info --name client.rbd
-##### 3.映射Ceph block device到client或docker volume
+rbd --image rbd1 info --name client.rbd 
+ ```
+ 2. 
+```
+
+```
+##### 3.映射Ceph block device到本地client或docker volume的块设备
 rbd map --image rbd1 --name client.rbd
 
 ##### 4.如果用docker或k8s怎么做
 
-### 寻址过程
-补上三层映射图。。
 
 ### rbd volume挂载
 根据ceph/ceph-docker项目，通过Docker容器将Ceph RBD volume挂载到主机。
