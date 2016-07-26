@@ -1,0 +1,137 @@
+#!/bin/bash 
+# 
+# Suppose that we know the IP address of the PXE server machine, denoted by pxe-server, we run this script via ssh to configure the PXE server.
+#
+#    ssh root@pxe-server -c this_scrpt.sh
+#
+# This script is based on documents in Github repo https://github.com/k8sp/bare-metal-coreos and https://github.com/k8sp/bare-metal-coreos/tree/master/pxe-on-rasppi.
+
+#
+# Basic configuration information
+#
+
+SelfIP=
+Subnet=192.168.2.0
+Netmask=255.255.255.0
+
+IPRangeLow=192.168.2.11 
+IPRangeHigh=192.168.2.249
+
+Routers=192.168.2.1
+Broadcast=192.168.2.255
+Nameservers="${SelfIP}, 8.8.8.8, 8.8.4.4"
+
+declare -A MacToIP=(
+    ["00:25:90:C0:F7:80"]="10.10.10.201"
+    ["00:25:90:C0:F6:EE"]="10.10.10.202"
+)
+
+CoreOSChannel=stable
+CoreOSVersion=1010.5.0
+CoreOSMirror=${CoreOSChannel}.release.core-os.net/amd64-usr/${CoreOSVersion}
+
+if cat /etc/os-release | grep NAME | head -n 1 | cut -f 2 -d '=' | grep CentOS; then 
+  TFTPRoot=/var/lib/tftpboot
+elif cat /etc/os-release | grep NAME | head -n 1 | cut -f 2 -d '=' | grep Ubuntu; then 
+  TFTPRoot=/srv/tftp
+fi
+
+DHCPConf=/etc/dhcp/dhcpd.conf
+
+# 创建 TFTP 目录
+if [[ ! -e $TFTPRoot ]]; then
+  mkdir $TFTPRoot
+fi
+
+pxelinux_cfg_dir="${TFTPRoot}/pxelinux.cfg"
+if [[ ! -e ${pxelinux_cfg_dir} ]]; then
+  mkdir ${pxelinux_cfg_dir} 
+fi
+
+# Create default pxelinux config
+cat > ${pxelinux_cfg_dir}/default << 'EOF'
+default coreos
+label coreos
+  menu default
+  kernel coreos_production_pxe.vmlinuz
+  append initrd=coreos_production_pxe_image.cpio.gz cloud-config-url=http://${SelfIP}/install-coreos.sh
+EOF
+  
+  
+
+
+# 下载和校验 CoreOS 启动镜像 
+(
+  cd $TFTPRoot
+  
+  if [[ ! -f coreos_production_pxe.vmlinuz.sig ]]; then
+    wget http://${CoreOSMirror}/coreos_production_pxe.vmlinuz.sig
+  fi
+  
+  if [[ ! -f coreos_production_pxe_image.cpio.gz.sig ]]; then
+    wget http://${CoreOSMirror}/coreos_production_pxe_image.cpio.gz.sig
+  fi
+  
+  if [[ ! -f coreos_production_pxe.vmlinuz ]]; then 
+    wget http://${CoreOSMirror}/coreos_production_pxe.vmlinuz
+  fi
+  
+  gpg --verify coreos_production_pxe.vmlinuz.sig
+  if [[ $? != 0 ]]; then
+    echo "ERROR: GPG checking of coreos_production_pxe.vmlinuz failed."
+  fi
+  
+  if [[ ! -f coreos_production_pxe_image.cpio.gz ]]; then
+    wget http://${CoreOSMirror}/coreos_production_pxe_image.cpio.gz 
+  fi
+  
+  gpg --verify coreos_production_pxe_image.cpio.gz.sig
+  if [[ $? != 0 ]]; then
+    echo "ERROR: GPG checking of coreos_production_pxe_image.cpio.gz failed."
+  fi
+)
+
+#
+# 配置DHCP
+#
+cat > $DHCPConf << 'EOF'
+next-server $SelfIP;
+filename "pxelinux.0";
+
+subnet $Subnet netmask $Netmask {
+    range $IPRangeLow $IPRangeHi;
+    option routers $Routers;
+    option broadcast-address $Broadcast;
+    option domain-name-servers $Nameservers; 
+EOF
+
+for i in "${!MacTOIP[@]}"; do
+        mac=$(echo $i | sed 's/:/-/g');
+        cat <<EOF
+        host $mac   {
+                hardware ethernet $i;
+                fixed-address ${MacToIP[$i]};
+        }
+EOF
+done >> $DHCPConf
+
+echo "}" >> $DHCPConf
+
+
+
+
+# 安装软件包
+if cat /etc/os-release | grep NAME | head -n 1 | cut -f 2 -d '=' | grep CentOS; then 
+
+  yum -y install tftp-server dhcp syslinux nginx
+  
+  sudo cp /usr/share/syslinux/pxelinux.0 $TFTPRoot
+  
+elif cat /etc/os-release | grep NAME | head -n 1 | cut -f 2 -d '=' | grep Ubuntu; then 
+
+  apt-get -y install isc-dhcp-server tftp-hpa pxelinux syslinux-common nginx
+  
+  cp /usr/lib/PXELINUX/pxelinux.0 $TFTPRoot
+  cp /usr/lib/syslinux/modules/bios/ldlinux.c32 $TFTPRoot
+fi
+
