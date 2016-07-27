@@ -2,12 +2,13 @@
 
 用Vim编辑Go程序的话，貌似应该安装这个Vim插件：https://github.com/fatih/vim-go
 ## 下载和安装go
-从下载https://golang.org/doc/install?download=go1.6.3.linux-amd64.tar.gz，Getting Started
+从https://golang.org/doc/install?download=go1.6.3.linux-amd64.tar.gz 下载
  - sudo tar -C /usr/local -xzf go1.6.3.linux-amd64.tar.gz
  - 在etc/profile中添加export PATH=$PATH:/usr/local/go/bin
  - source /etc/profile
 
-## Go的开发目录https://golang.org/doc/code.html#Workspaces
+## Go的开发目录
+https://golang.org/doc/code.html#Workspaces
  - mkdir ~/work
  - cd ~/work
  - export GOPATH=$(pwd)
