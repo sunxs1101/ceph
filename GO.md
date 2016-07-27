@@ -27,9 +27,10 @@ package main
    }
 ``` 
  - go run helloworld.go
- - 在目录里执行go install
+ - cd helloworld && go install
  - ls ~/work/bin/helloworld 这是go install输出
  - 打开https://golang.org/doc/code.html，查看workspace中的目录树，前面是手动创建src，在src下创建helloworld，接下来创建一个library
+
 ## 写一个Go库
  - mkdir ~/work/src/stringutil
  - cd ~/work/src/stringutil
@@ -51,9 +52,9 @@ func Reverse(s string) string {
  - ls $GOPATH/pkg/
  - tree $GOPATH/pkg/
  - go install helloworld/$GOPATH/bin/helloworld
-
- - git config --global url."https://c61axxxxxxxxxxxxxxx:x-oauth-basic@github.com/".insteadOf "https://github.com/"
- - vim ~/.gitconfig 你会发现~/.gitconfig中有一些配置
+ - $GOPATH/src/github.com/user/stringutil
+ - $GOPATH/src/stringutil
+ - git config --global url."https://c61axxxxxxxxxxxxxxx:x-oauth-basic@github.com/".insteadOf "https://github.com/" ,vim ~/.gitconfig 你会发现~/.gitconfig中有一些配置
  - export http_proxy=http://10.200.19.203:8118; export https_proxy=http://10.200.19.203:8118。这两句是为了翻墙
  - 运行 go get github.com/k8sp/auto-install/cloud-config-server
  - ls $GOPATH/bin/ | grep cloud-config
@@ -66,8 +67,6 @@ func Reverse(s string) string {
 
    - 等价与cd ~/work/src/github.com/k8sp/auto-install/cloud-config-server && go install
 
-## go install
-
 ## go get .../goimports （需要翻墙，因为很多基础库在Google服务器上）
  - go get golang.org/x/tools/cmd/goimports
  - ls $GOPATH/bin/goimports
@@ -78,6 +77,8 @@ func Reverse(s string) string {
 
 ## 配置Vim和Emacs在存盘时自动调用goimports
  - http://tleyden.github.io/blog/2014/05/27/configure-emacs-as-a-go-editor-from-scratch-part-2/
+
+所有操作结束，下面分别介绍。
 
 ## go get from private Github repo
  - go get github.com/k8sp/auto-install/cloud-config-server
@@ -97,8 +98,6 @@ func Reverse(s string) string {
 
 ## 配置 git 使用 token 访问 Github.com
 
-
- 
 ## 参考
-- http://wiki.jikexueyuan.com/project/go-command-tutorial/0.2.html
+
 
