@@ -51,11 +51,10 @@ func Reverse(s string) string {
  - tree $GOPATH/pkg/
  - go install helloworld/$GOPATH/bin/helloworld
 
- - git config --global url."https://133bf72ae1273a750e9094c4080613e8e232ca85:x-oauth-basic@github.com/".insteadOf "https://github.com/"
- - vim ~/.gitconfig
- - export http_proxy=http://10.200.19.203:8118
- - export https_proxy=http://10.200.19.203:8118
- - go get github.com/k8sp/auto-install/cloud-config-server
+ - git config --global url."https://c61axxxxxxxxxxxxxxx:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+ - vim ~/.gitconfig 你会发现~/.gitconfig中有一些配置
+ - export http_proxy=http://10.200.19.203:8118; export https_proxy=http://10.200.19.203:8118。这两句是为了翻墙
+ - 运行 go get github.com/k8sp/auto-install/cloud-config-server
  - ls $GOPATH/bin/ | grep cloud-config
  - cd ~/work/src/github.com/k8sp/auto-install/cloud-config-server
  - grep cloud-config*.go
