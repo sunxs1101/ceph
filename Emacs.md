@@ -94,13 +94,11 @@ emacs配置的核心是初始化文件init.el，在linux系统中，文件放置
 
 http://www.open-open.com/lib/view/open1451802607011.html
 
-
-
+## 参考
  - emacs http://www.gnu.org/software/emacs/download.html
  - http://www.gnu.org/software/emacs/manual/pdf/emacs.pdf
  - http://www.jesshamrick.com/2012/09/10/absolute-beginners-guide-to-emacs/
  - https://www.gnu.org/software/emacs/tour/
 
-#vim用法总结
-
-http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-1.html
+## vim用法
+ - http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-1.html
