@@ -2,7 +2,7 @@
 
 用Vim编辑Go程序的话，貌似应该安装这个Vim插件：https://github.com/fatih/vim-go
 ## 下载和安装go
-参考https://golang.org/doc/install?download=go1.6.3.linux-amd64.tar.gz，Getting Started
+从下载https://golang.org/doc/install?download=go1.6.3.linux-amd64.tar.gz，Getting Started
  - sudo tar -C /usr/local -xzf go1.6.3.linux-amd64.tar.gz
  - 在etc/profile中添加export PATH=$PATH:/usr/local/go/bin
  - source /etc/profile
@@ -16,16 +16,18 @@
 
 ## 写一个Go程序(helloworld)
  - vim src/helloworld.go
-   - package main
-   - import "fmt"
-   - func main(){
-   -  fmt.Printf("Hello,world.\n")
-   - }
- - go run helloworld.go
- - go -version
- - # go install
- - ls ~/work/bin/helloworld
 
+ ```
+package main
+   import "fmt"
+   func main(){
+    fmt.Printf("Hello,world.\n")
+   }
+``` 
+ - go run helloworld.go
+ - 在目录里执行go install
+ - ls ~/work/bin/helloworld 这是go install输出
+ - 打开https://golang.org/doc/code.html，查看workspace中的目录树，前面是手动创建src，在src下创建helloworld，接下来创建一个library
 ## 写一个Go库
  - mkdir ~/work/src/stringutil
  - cd ~/work/src/stringutil
@@ -80,10 +82,11 @@ func Reverse(s string) string {
  - go get github.com/k8sp/auto-install/cloud-config-server
 
 ## go命令解释
+ - go install：用于编译并安装指定的代码包及它们的依赖包。
  - go get ==> go clone+go install 
- - go install
  - go test:go test编译所有go文件包括test。运行go时忽略_test.go文件。
    - go test -v 
+ - go build：用于编译我们指定的源码文件或代码包以及它们的依赖包。
 
 ## Github personal access token 的生成和意思
  - 个人github页面 -> settings -> Personal access tokens
