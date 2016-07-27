@@ -7,7 +7,7 @@
  - 在etc/profile中添加export PATH=$PATH:/usr/local/go/bin
  - source /etc/profile
 
-## Go的开发目录
+## Go的开发目录https://golang.org/doc/code.html#Workspaces
  - mkdir ~/work
  - cd ~/work
  - export GOPATH=$(pwd)
@@ -60,9 +60,8 @@ func Reverse(s string) string {
    - tp "cloud-config-server/template"==>tp"github.com/k8sp/auto-install/cloud-config-server/template"
  - go install
  - go install github.com/k8sp/auto-install/cloud-config-server
-   - 等价与cd ~/work/src/github.com/k8sp/auto-install/cloud-config-server && go install
-   - 
 
+   - 等价与cd ~/work/src/github.com/k8sp/auto-install/cloud-config-server && go install
 
 ## go install
 
@@ -71,18 +70,28 @@ func Reverse(s string) string {
  - ls $GOPATH/bin/goimports
  - $GOPATH/bin/goimports ~/work/src/helloworld/helloworld.go
  - goimports -w ~/work/src/helloworld/helloworld.go
+
 ## 使用 goimports 排版Go源码
+
 ## 配置Vim和Emacs在存盘时自动调用goimports
  - http://tleyden.github.io/blog/2014/05/27/configure-emacs-as-a-go-editor-from-scratch-part-2/
 
 ## go get from private Github repo
+ - go get github.com/k8sp/auto-install/cloud-config-server
+
+## go命令解释
+ - go get ==> go clone+go install 
+ - go install
+ - go test:go test编译所有go文件包括test。运行go时忽略_test.go文件。
+   - go test -v 
+
 ## Github personal access token 的生成和意思
  - 个人github页面 -> settings -> Personal access tokens
  - 这个token包括用户名和密码，私密保存
+
 ## 配置 git 使用 token 访问 Github.com
- - 
-## go get github.com/k8sp/auto-install/cloud-config-server
- 
+
+
  
 ## 参考
 - http://wiki.jikexueyuan.com/project/go-command-tutorial/0.2.html
