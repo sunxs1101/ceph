@@ -90,6 +90,8 @@ func Reverse(s string) string {
  - go build：用于编译我们指定的源码文件或代码包以及它们的依赖包。
 
 ## Github personal access token 的生成和意思
+#### the problem
+参考[这篇文档](https://github.com/k8sp/auto-install/issues/29)
  - 个人github页面 -> settings -> Personal access tokens
  - 这个token包括用户名和密码，私密保存
 
