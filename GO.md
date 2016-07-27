@@ -8,7 +8,8 @@
  - source /etc/profile
 
 ## Go的开发目录
-https://golang.org/doc/code.html#Workspaces
+https://golang.org/doc/code.html#Workspaces 
+Go语言编程一般把所有Go代码放到一个workspace。
  - mkdir ~/work
  - cd ~/work
  - export GOPATH=$(pwd)
