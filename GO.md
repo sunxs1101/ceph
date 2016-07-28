@@ -1,4 +1,4 @@
-# GO语言说明
+# GO语言学习
 
 用Vim编辑Go程序的话，貌似应该安装这个Vim插件：https://github.com/fatih/vim-go
 ## 下载和安装go
