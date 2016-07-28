@@ -247,3 +247,19 @@ gometalinter stringutil
 Travis CI应该被配置成除了build和unit test，还要调用 gometalinter 做检查。（TODO：王益）
 
 
+## Unit Test
+
+关于如何写 unit test，请参见 https://golang.org/pkg/testing/ 。Unit test源码都在有 `_test`后缀的源文件里，比如 `strutil_test.go`。
+
+写好之后，运行 `go test <package-path-based-on-$GOPATH/src>` 来测试。
+
+注意，`go install` 只编译没有 `_test` 后缀的源文件，所以那些 `_test.go` 里的代码尽可以不优化执行效率，尽可以导致产生很大的可执行文件。
+
+
+## 文档
+
+任何开源项目的文档都可以通过 godoc.org 自动生成。比如 https://github.com/wangkuiyi/sh 的文档在 https://godoc.org/github.com/wangkuiyi/sh 。
+
+godoc.org会去读取URL里指定的repo的默认branch（一般都是master），分析其中源码，根据package和函数定义之前的注释，自动生成文档。
+
+
