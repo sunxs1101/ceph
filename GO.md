@@ -1,6 +1,9 @@
 # GO语言学习
 
 用Vim编辑Go程序的话，貌似应该安装这个Vim插件：https://github.com/fatih/vim-go
+
+go语言：函数首字母大写，其他包可见;首字母小写，其他包不可见。
+
 ## 下载和安装go
 从https://golang.org/doc/install?download=go1.6.3.linux-amd64.tar.gz 下载
  - sudo tar -C /usr/local -xzf go1.6.3.linux-amd64.tar.gz
