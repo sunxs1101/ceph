@@ -1,22 +1,5 @@
 # GO语言学习
 
-用Vim编辑Go程序的话，貌似应该安装这个Vim插件：https://github.com/fatih/vim-go
-
- * go语言：函数首字母大写，其他包可见;首字母小写，其他包不可见。
- * 任何一个名称为main的package必须有个main函数
- * go run hello.go = go build 生成hello二进制文件，然后运行 ./hello
-
-### go的三个环境变量
-
- - GOROOT：GO语言安装的路径
- - GOPATH：表示包所在的地址，可以设置多个
- - PATH：可执行程序的路径
-
-### go命令
- - go help 
- - go env:显示环境变量
- - 
-
 
 ## 下载和安装go
 从https://golang.org/doc/install?download=go1.6.3.linux-amd64.tar.gz 下载
