@@ -65,6 +65,7 @@ Ceph storage cluster从Ceph clients接收数据，不管这个数据来自Ceph b
 - The PG map：包括PG版本，时间戳，上次OSD map的epoch，全比例，每个PG的详细信息，比如PG ID，UP Set，Acting Set，PG状态和每个pool的数据使用统计
 - The CRUSH map：包括存储设备，故障域层级，存储数据时遍历层级的规则。
 - The MDS map：包含当前MDS map epoch，map创建，最后修改时间，存储元数据的pool，元数据服务器列表及其状态。执行ceph mds dump查看MDS map。
+
 ![](http://docs.ceph.com/docs/master/_images/ditaa-ae8fc6ae5b4014f064a0bed424507a7a247cd113.png)
 
 ### 高可用性monitors
