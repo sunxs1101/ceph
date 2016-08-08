@@ -93,7 +93,7 @@ Client和Monitor的key文件分别是/etc/ceph/ceph.client.admin.keyring和ceph.
 
 
 
-## Ceph Docker集群配置
+## Client读写ceph集群
 
 在某台机器上运行mon后，在/etc/ceph/和/var/lib/ceph生成配置文档，需要把配置文件分布到其他机器。
 1. 在k8s集群中用etcd写入/etc/ceph/下四个配置文件和/var/lib/ceph/bootstrap-rgw|bootstrap-mds|bootstrap-osd/ceph.keyring三个keyring文件，其他机器安装mon时从etcd中读取。这种方法的缺点是要指定第一台机器，不能全自动安装。
@@ -120,7 +120,7 @@ pool池设置一下几个参数：
  - CRUSH规则表
 Ceph客户端从Monitor获取Cluster Map，将对象写入pools池中。副本个数，CRUSH规则表以及PG数量决定Ceph如何存放数据。
 
-### 寻址过程
+## 存储的寻址过程
 
 ![](https://github.com/sunxs1101/ceph/blob/master/image/ceph.png)
 
