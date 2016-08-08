@@ -110,12 +110,18 @@ librados 就是一个该协议的编码库形式的实现。所有的 Ceph clien
     client 直接和 OSD Deamon 交互来读或者写数据。
 
 ![](http://images2015.cnblogs.com/blog/697113/201509/697113-20150925100559037-1388278685.jpg)
-
-
-其调用层次为 命令行rbd -> librbd（rbd.py) -> librados(rados.py连接集群）
+在构建好底层的Ceph Storage Cluster以后，需要创建pool，pool是用户存储对象的逻辑分区。
+每个pool有一定数量的PG，每个PG包含两个以上的OSD。
+pool池设置一下几个参数：
+ - 拥有/访问对象
+ - 副本的个数，ceph osd dump | grep 'replicated size'
+ - PG的数量
+ - CRUSH规则表
+Ceph客户端从Monitor获取Cluster Map，将对象写入pools池中。副本个数，CRUSH规则表以及PG数量决定Ceph如何存放数据。
 
 ### 寻址过程
-补上三层映射图。。
+
+![](https://github.com/sunxs1101/ceph/blob/master/image/ceph.png)
 
 ##### 1.配置ceph客户端
  - lsb_release -a , uname -r 
@@ -137,10 +143,6 @@ rbd实际是kernel module的方法，下面介绍docker rbd和linux rbd两种操
  - rbd ls --name client.rbd;
  - rbd --image rbd1 info --name client.rbd; 
 
-执行crawler@Crawler-01:~$ sudo rbd map docker_registry后，出现以下问题：
- - rbd: sysfs write failed
- - rbd: map failed: (2) No such file or directory
-
 ###### docker rbd
  - sudo docker run --rm -v /etc/ceph:/etc/ceph ceph/rbd ls
  - sudo docker run --rm -v /etc/ceph:/etc/ceph ceph/rbd info docker-registry
@@ -149,21 +151,6 @@ rbd实际是kernel module的方法，下面介绍docker rbd和linux rbd两种操
 rbd map --image rbd1 --name client.rbd
 https://bugs.launchpad.net/ubuntu/+source/ceph/+bug/1578484
 
-
-Ceph – Map RBD devices without installing ceph using docker
-
-
-### rbd volume挂载
-根据ceph/ceph-docker项目，通过Docker容器将Ceph RBD volume挂载到主机。
-运行docker build . 
-未完..
-### 问题梳理
- - qemu与linux kernel区别，host与虚拟机区别
- - rbd命令行是走linux kernel路径
- - librbd客户端与如何认证
- - 客户端与用户
- - 上传文件不行
- - docker安装补上
 
 ## 参考文献
 - ceph官方文档 http://docs.ceph.com/docs/master/
