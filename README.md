@@ -124,6 +124,11 @@ Ceph客户端从Monitor获取Cluster Map，将对象写入pools池中。副本�
 
 ![](https://github.com/sunxs1101/ceph/blob/master/image/ceph.png)
 
+三次映射：
+File是用户要存储的对象，映射为RADOS存储的对象Object。
+PG对object的存储进行组织和位置映射，PG和object之间是“一对多”映射关系，一个PG负责组织若干个object。
+PG和OSD之间是“多对多”映射关系。RADOS采用CRUSH算法将PG映射得到n个OSD，n可配置，在生产环境下通常为3。一个OSD的PG可达到百个。
+
 ##### 1.配置ceph客户端
  - lsb_release -a , uname -r 
  - modprobe rbd---检查kernel对RBD的支持。
