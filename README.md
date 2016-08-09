@@ -134,7 +134,8 @@ PG和OSD之间是“多对多”映射关系。RADOS采用CRUSH算法将PG映射
  - modprobe rbd---检查kernel对RBD的支持。
  - 安装ceph，ceph-common来使用rbd命令行
 ```
-client需要Ceph keys来连接Ceph集群，Ceph会创建一个默认的用户client.admin，它可以全连接到Ceph集群，不推荐将client.admin keys与client节点共享。更好的方法是创建有独立keys的新用户，连接到指定的Ceph pools。 
+client需要Ceph keys来连接Ceph集群，Ceph会创建一个默认的用户client.admin，它可以全连接到Ceph集群，
+不推荐将client.admin keys与client节点共享。更好的方法是创建有独立keys的新用户，连接到指定的Ceph pools。 
 --name client.rbd表示新建的一个用户。
 ``` 
  - 拷贝集群中的配置文件ceph.conf到client
@@ -157,6 +158,22 @@ rbd实际是kernel module的方法，下面介绍docker rbd和linux rbd两种操
 rbd map --image rbd1 --name client.rbd
 https://bugs.launchpad.net/ubuntu/+source/ceph/+bug/1578484
 
+## 分布式文件系统比较
+作为对象存储，Ceph类似Swift
+作为文件存储，类似HDFS，可以替代HDFS，但HDFS是流式存储，即一次写多次读，想使用Ceph文件存储的化，每台host上还要运行MDS。
+Ceph对比HDFS优势在于易扩展，无单点。
+作为块存储，类似Cinder，作为块设备像硬盘一样直接挂载。
+
+
+Ceph的结构，对象存储由LIBRADOS和RADOSGW提供，块存储由RBD提供，文件系统由CEPH FS提供，而RADOSGW, RBD, CEPH FS均需要调用LIBRADOS的接口，而最终都是以对象的形式存储于RADOS里。
+
+每一个架构都有其位置，根据应用场景去选择。
+### HDFS
+ - 缺点：不适合低延迟数据访问、无法高效存储大量小文件、不支持多用户写入及任意修改文件
+ - 优点：适合存储大问题，ChunkSize通常64M，不适合小文件，比如几M的图片。hadoop及HDFS设计的初衷是批处理，大量数据的Map-Reduce。
+
+### Ceph
+ - 是一个支持大量小文件和随机读写的分布式文件系统。
 
 ## 参考文献
 - ceph官方文档 http://docs.ceph.com/docs/master/
