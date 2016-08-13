@@ -1,3 +1,24 @@
+## docker学习
+ 1. docker run [options] IMAGE [command]
+``` 
+docker run用来基于特定的镜像创建一个容器，如docker run ubuntu echo "hello world"
+sudo docker run -i -t --name mytest ubuntu:latest /bin/bash
+-i表示使用交互模式
+-t表示分配一个伪终端
+--name可以指定docker run命令启动容器的名词，无此选项，Docker将为容器随机分配一个名字
+在镜像名后添加tag来区分同名的镜像，如ubuntu:14.04，默认选取tag为latest的镜像。
+```
+ 2. docker ps
+ 3. docker commit
+
+## docker部署
+docker的设计理念是希望用户能够保证一个容器只运行一个进程，即只提供一种服务。
+然而，单一容器是无法满足需求的，通常用户需要利用多个容器，分别提供不同的服务，并在不同容器间互连通信，最后形成一个docker集群。
+
+docker run命令的--link选项建立容器间的互联关系。
+
+
+
 ##使用docker镜像和仓库
  - sudo docker images列出镜像，镜像保存在仓库中，仓库存在Registry中，默认的Registry是由docker公司运营的公共Registry服务，即Docker Hub。
  
