@@ -1,5 +1,5 @@
 ## docker学习
- 1. docker run [options] IMAGE [command]
+ - docker run [options] IMAGE [command]
 ``` 
 docker run用来基于特定的镜像创建一个容器，如docker run ubuntu echo "hello world"
 sudo docker run -i -t --name mytest ubuntu:latest /bin/bash
@@ -8,8 +8,18 @@ sudo docker run -i -t --name mytest ubuntu:latest /bin/bash
 --name可以指定docker run命令启动容器的名词，无此选项，Docker将为容器随机分配一个名字
 在镜像名后添加tag来区分同名的镜像，如ubuntu:14.04，默认选取tag为latest的镜像。
 ```
- 2. docker ps
- 3. docker commit
+ - docker ps
+ - docker commit
+ -
+### docker镜像关键概念
+```
+registry:保存docker镜像
+repository:具有某个功能的Docker镜像的所有迭代版本构成的镜像库，registry由一系列经过命名的repository组成。
+registry是repository的集合，repository是镜像集合
+```
+## kubernetes学习
+
+pod可以想象成一个篮子，而容器则是篮子里的鸡蛋。
 
 ## docker部署
 docker的设计理念是希望用户能够保证一个容器只运行一个进程，即只提供一种服务。
