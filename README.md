@@ -1,3 +1,4 @@
+use Ceph as storage backend
 
 本文简述使用ceph/ceph-docker项目<sup>[docker](#docker)</sup>创建的Docker image来部署Ceph机群的方法。
 # 在CoreOS上配置Ceph集群
