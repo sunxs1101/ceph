@@ -94,11 +94,25 @@ emacs配置的核心是初始化文件init.el，在linux系统中，文件放置
 
 http://www.open-open.com/lib/view/open1451802607011.html
 
+### 包管理
+启动emacs后，会有一个叫ELPA(Emacs Lisp Package Archive)的包管理系统，用来安装和管理包。打开包管理：M-x package-list-packages
+
+
+    【Enter ↵】 (package-menu-describe-package) → Describe the package under cursor.
+    【i】 (package-menu-mark-install) → mark for installation.
+    【u】 (package-menu-mark-unmark) → unmark.
+    【d】 (package-menu-mark-delete) → mark for deletion (removal of a installed package).
+    【x】 (package-menu-execute) → for “execute” (start install/uninstall of marked items).
+    【r】 (package-menu-refresh) → refresh the list from server.
+upgrade packages, just press 【U x】.
+New packages are installed at ~/.emacs.d/elpa/.
+
+
 ## 参考
  - emacs http://www.gnu.org/software/emacs/download.html
  - http://www.gnu.org/software/emacs/manual/pdf/emacs.pdf
  - http://www.jesshamrick.com/2012/09/10/absolute-beginners-guide-to-emacs/
  - https://www.gnu.org/software/emacs/tour/
-
+ - http://ergoemacs.org/emacs/emacs_package_system.html
 ## vim用法
  - http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-1.html
