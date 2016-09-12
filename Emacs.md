@@ -114,6 +114,19 @@ http://www.open-open.com/lib/view/open1451802607011.html
     【r】 (package-menu-refresh) → refresh the list from server.
 upgrade packages, just press 【U x】.
 New packages are installed at ~/.emacs.d/elpa/.
+#### elpy——python开发插件
+安装elpy插件包
+```
+(defvar myPackages
+  '(better-defaults
+    elpy ;; add the elpy package
+    material-theme))
+```
+启用插件
+```
+(elpy-enable)
+```
+Python缓冲区按下 C-c C-c 即可运行这个脚本。
 
 ### 其他
 Emacs在编辑时会为每个文件提供“自动保存”的机制，自动保存的文件的文件名前后都有一个#，用户正常保存后，Emacs就会删除这个#文件。
