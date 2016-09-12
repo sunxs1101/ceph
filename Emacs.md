@@ -83,10 +83,11 @@ C-g：终止命令，取消参数。不小心按了ESC，可以用C-g来取消�
  
 ### 多窗格
  - C-u 0 C-l：移动光标到这一行
- - C-x 2：将屏幕分成两个
+ - C-x 2：上下将屏幕分成两个
+ - C-x 3：左右将屏幕分成两个
+ - C-x 1：关掉下方窗格
  - C-M-v：滚动下方的窗格
  - C-X o：光标转移到下方的窗格
- - C-x 1：关掉下方窗格
 ### 帮助命令
  - C-h c：再输入一个组合键，Emacs会给出这个命令的简要说明
  - C-h k：再输入一个组合键，Emacs会打开一个窗格显示函数的名称及其文档，C-x 1关闭窗格。
@@ -96,12 +97,13 @@ C-g：终止命令，取消参数。不小心按了ESC，可以用C-g来取消�
 ### 安装
 在ubuntu中，执行sudo apt-get -f install emacs24
 ### 配置
-emacs配置的核心是初始化文件init.el，在linux系统中，文件放置在C:/.emacs.d/init.el
+emacs配置的核心是初始化文件（Initialization File）init.el，在linux系统中，文件放置在C:/.emacs.d/init.el
 
+配置示例代码的第一部分安装了better-defaults和material-theme两个插件包，第二部分是基本自定义。
 http://www.open-open.com/lib/view/open1451802607011.html
 
 ### 包管理
-启动emacs后，会有一个叫ELPA(Emacs Lisp Package Archive)的包管理系统，用来安装和管理包。打开包管理：M-x package-list-packages
+启动emacs后，会有一个叫ELPA(Emacs Lisp Package Archive)的包仓库，用来安装和管理插件包。打开包管理：M-x package-list-packages
 
 
     【Enter ↵】 (package-menu-describe-package) → Describe the package under cursor.
