@@ -94,10 +94,10 @@ C-g：终止命令，取消参数。不小心按了ESC，可以用C-g来取消�
  - C-h f：解释给定的命令
  - C-h a：通过关键词或正则搜索命令
 
-### 安装
+### 安装emacs24
 在ubuntu中，执行sudo apt-get -f install emacs24
-### 配置
-emacs配置的核心是初始化文件（Initialization File）init.el，在linux系统中，文件放置在C:/.emacs.d/init.el
+### 配置init.el
+emacs配置的核心是初始化文件（Initialization File）init.el，在linux系统中，文件放置在C:/.emacs.d/init.el。如果你将 init.el 文件放在了正确地路径中，Emacs将会自动加载该文件。另外，你也可以在命令行输入emacs -q --load <path to init.el> 命令，启动Emacs。
 
 配置示例代码的第一部分安装了better-defaults和material-theme两个插件包，第二部分是基本自定义。
 http://www.open-open.com/lib/view/open1451802607011.html
