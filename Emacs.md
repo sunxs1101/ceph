@@ -6,10 +6,16 @@ Emacs命令很多，把它们都对应到CONTROL和META组合键上不太可能�
  1. C-x 字符扩展。 C-x之后输入另一个字符或者组合键
  2. M-x 命令名扩展。 M-x之后输入一个命令名。M-x通常并不常用，只用在部分模式下，如替换
 
+##启动Emacs
+emacs --nw或emacs myFileName
+
+
 下面介绍Emacs的基本操作：
  - C-x C-f：打开文件
  - C-x C-s：保存文件
  - C-x C-b：列出缓冲区
+ - C-x b：切换缓冲
+ - C-x k：kill buffer，关闭当前文件
  - C-x C-c：离开Emacs
  - C-x 1：关掉其它所有窗口，只保留一个
  - C-x u：撤销
@@ -107,6 +113,8 @@ http://www.open-open.com/lib/view/open1451802607011.html
 upgrade packages, just press 【U x】.
 New packages are installed at ~/.emacs.d/elpa/.
 
+### 其他
+Emacs在编辑时会为每个文件提供“自动保存”的机制，自动保存的文件的文件名前后都有一个#，用户正常保存后，Emacs就会删除这个#文件。
 
 ## 参考
  - emacs http://www.gnu.org/software/emacs/download.html
