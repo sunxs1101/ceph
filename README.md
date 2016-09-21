@@ -184,3 +184,15 @@ Ceph的结构，对象存储由LIBRADOS和RADOSGW提供，块存储由RBD提供�
 - CRUCH-Controlled,Scalable,Decentralized Placement of Replicated Data http://ceph.com/papers/weil-crush-sc06.pdf
 - rbd-voluem https://github.com/ceph/ceph-docker/tree/master/rbd-volume
 - docker https://github.com/ceph/ceph-docker/blob/master/ceph-releases/jewel/ubuntu/14.04/daemon/README.md
+
+## 个人理解
+
+Ceph支持object, block和file storage三种存储方式，Client可以通过RESTful，block和POSIX三种接口分别对这三种存储方式访问，参考http://docs.ceph.com/docs/master/architecture/ 架构图。以块存储为例：
+
+1. 用block接口访问块存储，这种方式是为Host和虚拟机提供服务（[架构图](http://docs.ceph.com/docs/master/architecture/)中的HOST/VM），[参考](http://docs.ceph.com/docs/master/rbd/rbd/)。RADOS Block Devices (RBD)通过[kernel 模块](http://docs.ceph.com/docs/master/rbd/rbd-ko/)或[librbd库](http://docs.ceph.com/docs/master/rbd/qemu-rbd/)与OSDs交互，由[RBD](http://docs.ceph.com/docs/master/rbd/rados-rbd-cmds/)管理RADOS Block Devices(RBD)的镜像。前面comment中的访问方式2应该就属于这种方式，如果在Docker container中运行参考前面comment中的访问方式2。
+2. 此外，用户可以不限于这三种接口，利用librados建立自己的接口来对集群访问，用户自己写程序（[架构图](http://docs.ceph.com/docs/master/architecture/)中librados的APP），程序如何写，参考http://docs.ceph.com/docs/master/rados/api/librados-intro/  即前面comment中的访问方式1。
+
+在上述方式中，Client需要连接Monitor机器获取ceph.client.admin.keyring，从而与Ceph集群建立连接。另外，如果我们是通过[etcd的方式](https://github.com/ceph/ceph-docker/blob/master/ceph-eleases/jewel/ubuntu/14.04/daemon/README.md)建立集群的，Client还可以通过读取etcd来获取ceph.client.admin.keyring，这个我之前没有读取成功，总理说路径不对。
+
+补充：linux内核在2.6.34以后集成了Ceph的模块
+
