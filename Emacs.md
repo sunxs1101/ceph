@@ -47,7 +47,7 @@ C-g：终止命令，取消参数。不小心按了ESC，可以用C-g来取消�
  - C-x C-x：Swap point and mark，选中当前点和标签之间的内容，返回到上个标签位置
 
 ### 区域：point和mark之间的区域，很多命令只对该区域操作，如下
- - C-x h
+ - C-x h：全选
  - M h
  - C-x n n
  - C-x n w
@@ -60,7 +60,7 @@ C-g：终止命令，取消参数。不小心按了ESC，可以用C-g来取消�
  - M-<Delback>：移除光标前的一个词
  - M-d：移除光标后的一个词
  - C-u 10 C-k：删除10行
- - C-w：删除区域("cut")
+ - C-w：剪切
  - M-w：保持区域
 
 ### 召回(Yanking,"pasting")
