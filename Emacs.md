@@ -141,6 +141,15 @@ Python缓冲区按下 C-c C-c 即可运行这个脚本。
 ### 其他
 Emacs在编辑时会为每个文件提供“自动保存”的机制，自动保存的文件的文件名前后都有一个#，用户正常保存后，Emacs就会删除这个#文件。
 
+### org-mode
+参考[一年成为emacs高手](https://github.com/redguardtoo/mastering-emacs-in-one-year-guide/blob/master/guide-zh.org)，
+[org](http://orgmode.org/)是全能的笔记工具，需要安装这个插件。
+ > M-x package-install RET org
+
+### c++配置
+[Emacs as C++ IDE](http://blog.binchen.org/posts/emacs-as-c-ide-easy-way.html)
+
+
 ## 参考
  - emacs http://www.gnu.org/software/emacs/download.html
  - http://www.gnu.org/software/emacs/manual/pdf/emacs.pdf
