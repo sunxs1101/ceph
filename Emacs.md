@@ -70,7 +70,6 @@ C-g：终止命令，取消参数。不小心按了ESC，可以用C-g来取消�
 
 ### 撤销Undo：三种方法
  - C-x u
- - C-_
  - C-/
 
 ### 搜索和替换
@@ -93,6 +92,14 @@ C-g：终止命令，取消参数。不小心按了ESC，可以用C-g来取消�
  - C-h k：再输入一个组合键，Emacs会打开一个窗格显示函数的名称及其文档，C-x 1关闭窗格。
  - C-h f：解释给定的命令
  - C-h a：通过关键词或正则搜索命令
+### [note](http://ergoemacs.org/emacs/emacs_fun.html)
+#### call a command by name, type M-x, q quit
+calendar,calc,list-colors-display,dired,shell
+
+ - split-window-below → split top/bottom.
+ - split-window-right → split side-by-side.
+ - delete-other-windows → unsplit.
+ - other-window → move cursor to another pane. (or click mouse)
 
 ### 安装emacs24
 在ubuntu中，执行sudo apt-get -f install emacs24
