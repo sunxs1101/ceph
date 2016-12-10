@@ -13,7 +13,7 @@ emacs --nw或emacs myFileName
 下面介绍Emacs的基本操作：
  - C-x C-f：打开文件
  - C-x C-s：保存文件
- - C-x C-b：列出缓冲区
+ - C-x C-b：列出缓冲区，every file is shown in a “buffer”. (You can think of “buffer” as opened file or tabbed window without the tab.)
  - C-x b：切换缓冲
  - C-x k：kill buffer，关闭当前文件
  - C-x C-c：离开Emacs
@@ -39,6 +39,7 @@ C-g：终止命令，取消参数。不小心按了ESC，可以用C-g来取消�
 ### 搜索
  - C-s：前向搜索，再按一次C-s，跳到下一个命中位置，按退格键光标返回到上一个命中位置，按enter结束搜索。
  - C-r：后向搜索
+ - C-s C-s：search the same word searched last time, C-s C-w: search the word under the cursor.
  - C-s M-p：搜索历史中上一项
  - C-s M-n：搜索历史中下一项
 
@@ -100,6 +101,18 @@ calendar,calc,list-colors-display,dired,shell
  - split-window-right → split side-by-side.
  - delete-other-windows → unsplit.
  - other-window → move cursor to another pane. (or click mouse)
+ - whiterspace-mode: make spaces and tabs visible
+ - How to disable automatic "backup~" or "#aucto-save#" file: put `(setq make-backup-files nil) ; stop creating those backup~ files` or `(setq auto-save-default nil) ; stop creating those #auto-save# files` in your emacs init file
+ - How to set emacs so that all backups are placed into one backup folder?
+ 
+ ```
+ ;; backup in one place. flat, no tree structure
+(setq backup-directory-alist '(("" . "~/.emacs.d/emacs-backup")))
+ ```
+ 
+ 
+ 
+ 
 
 ### 安装emacs24
 在ubuntu中，执行sudo apt-get -f install emacs24
