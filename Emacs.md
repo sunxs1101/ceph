@@ -169,7 +169,30 @@ Emacs在编辑时会为每个文件提供“自动保存”的机制，自动保
 ### c++配置
 [Emacs as C++ IDE](http://blog.binchen.org/posts/emacs-as-c-ide-easy-way.html)
 
+### 已有配置
 
+#### Emacs 显示行号
+```
+Emacs需要第三方插件显示行号
+1.下载 linum.el。在网上搜一下，许多网站都提供下载。
+2.复制 linum.el 到“/usr/share/emacs/site-lisp/”
+
+3.配置  ~/.emacs 。如果主目录下，没有这个文件，需要新建。
+;;(setq column-number-mode t)
+;;(setq line-number-mode t)
+(global-linum-mode t)
+4.或者在Emacs下执行 M-x linum-mode 来显示或者取消行号
+M-x ： Alt + x
+输入： linum-mode
+```
+#### Emacs更改背景颜色
+```
+Emacs的配置文件在~/.emacs。现在就用Emacs打开这个文件吧，如果没有就创建一个。首先改一下颜色配置，让Emacs看起来更酷一些:
+(set-background-color "black/#CCE8CF") ;; 使用黑色背景
+(set-foreground-color "white") ;; 使用白色前景
+(set-face-foreground 'region "green")  ;; 区域前景颜色设为绿色
+(set-face-background 'region "blue") ;; 区域背景色设为蓝色
+```
 ## 参考
  - emacs http://www.gnu.org/software/emacs/download.html
  - http://www.gnu.org/software/emacs/manual/pdf/emacs.pdf
