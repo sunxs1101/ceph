@@ -193,6 +193,15 @@ Emacs的配置文件在~/.emacs。现在就用Emacs打开这个文件吧，如�
 (set-face-foreground 'region "green")  ;; 区域前景颜色设为绿色
 (set-face-background 'region "blue") ;; 区域背景色设为蓝色
 ```
+
+### Configuration and Packages
+The core of Emacs configuration is the [Initialization File](http://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html), init.el.
+`$ touch ~/.emacs.d/init.el`
+[Packages](https://www.gnu.org/software/emacs/manual/html_node/emacs/Packages.html) are used to customize Emacs, which are sourced from a number of repositories. The primary Emacs package repository is [MELPA](https://melpa.org/#/).
+
+### emacs python
+[Emacs - the Best Python Editor? ](https://realpython.com/blog/python/emacs-the-best-python-editor/)
+
 ## 参考
  - emacs http://www.gnu.org/software/emacs/download.html
  - http://www.gnu.org/software/emacs/manual/pdf/emacs.pdf
