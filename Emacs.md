@@ -6,7 +6,10 @@ Emacs命令很多，把它们都对应到CONTROL和META组合键上不太可能�
  1. C-x 字符扩展。 C-x之后输入另一个字符或者组合键
  2. M-x 命令名扩展。 M-x之后输入一个命令名。M-x通常并不常用，只用在部分模式下，如替换
 
-##启动Emacs
+## 安装emacs24
+在ubuntu中，执行sudo apt-get -f install emacs24
+
+## 启动Emacs
 emacs --nw或emacs myFileName
 
 
@@ -109,13 +112,7 @@ calendar,calc,list-colors-display,dired,shell
  ;; backup in one place. flat, no tree structure
 (setq backup-directory-alist '(("" . "~/.emacs.d/emacs-backup")))
  ```
- 
- 
- 
- 
 
-### 安装emacs24
-在ubuntu中，执行sudo apt-get -f install emacs24
 ### 配置init.el
 emacs配置的核心是初始化文件（Initialization File）init.el，在linux系统中，文件放置在C:/.emacs.d/init.el。如果你将 init.el 文件放在了正确地路径中，Emacs将会自动加载该文件。另外，你也可以在命令行输入emacs -q --load <path to init.el> 命令，启动Emacs。
 
@@ -135,18 +132,8 @@ http://www.open-open.com/lib/view/open1451802607011.html
 upgrade packages, just press 【U x】.
 New packages are installed at ~/.emacs.d/elpa/.
 #### elpy——python开发插件
-安装elpy插件包
-```
-(defvar myPackages
-  '(better-defaults
-    elpy ;; add the elpy package
-    material-theme))
-```
-启用插件
-```
-(elpy-enable)
-```
-Python缓冲区按下 C-c C-c 即可运行这个脚本。
+
+参考https://github.com/jorgenschaefer/elpy ，在Python缓冲区按下 C-c C-c 即可运行这个脚本。
 
 ### Lisp语言
 ```
@@ -161,7 +148,7 @@ Python缓冲区按下 C-c C-c 即可运行这个脚本。
 ### 其他
 Emacs在编辑时会为每个文件提供“自动保存”的机制，自动保存的文件的文件名前后都有一个#，用户正常保存后，Emacs就会删除这个#文件。
 
-### org-mode
+### org-mode插件
 参考[一年成为emacs高手](https://github.com/redguardtoo/mastering-emacs-in-one-year-guide/blob/master/guide-zh.org)，
 [org](http://orgmode.org/)是全能的笔记工具，需要安装这个插件。
  > M-x package-install RET org
